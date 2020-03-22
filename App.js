@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import reducers from './src/reducers';
 import firebase from 'firebase';
-import LoginForm from './components/LoginForm';
+import ReduxThunk from 'redux-thunk';
+import LoginForm from './src/components/LoginForm';
 
 class App extends Component {
   componentDidMount() {
@@ -22,9 +23,12 @@ class App extends Component {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
   }
+
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+
     return (
-      <Provider store={createStore(reducers)}>
+      <Provider store={store}>
         <SafeAreaView>
           <LoginForm />
         </SafeAreaView>
