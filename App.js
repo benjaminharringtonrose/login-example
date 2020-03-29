@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './src/reducers';
 import firebase from 'firebase';
 import ReduxThunk from 'redux-thunk';
 import LoginForm from './src/components/LoginForm';
+import Router from './Router';
 
 class App extends Component {
   componentDidMount() {
@@ -29,9 +30,9 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <SafeAreaView>
-          <LoginForm />
-        </SafeAreaView>
+        <View style={{ flex: 1 }}>
+          <Router />
+        </View>
       </Provider>
     );
   }
