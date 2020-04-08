@@ -1,35 +1,42 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Actions } from 'react-native-router-flux';
+import {
+  firstNameChanged,
+  lastNameChanged,
+  emailChanged,
+  passwordChanged,
+  registerUser,
+} from '../actions';
 
-class LoginForm extends Component {
-  //HANDLERS:
+class RegisterForm extends Component {
   onEmailChange(text) {
     this.props.emailChanged(text);
+  }
+
+  onFirstNameChange(text) {
+    this.props.firstNameChanged(text);
+  }
+
+  onLastNameChange(text) {
+    this.props.lastNameChanged(text);
   }
 
   onPasswordChange(text) {
     this.props.passwordChanged(text);
   }
 
-  onLoginPress() {
+  onRegisterPress() {
     const { email, password } = this.props;
-    this.props.loginUser({ email, password });
-  }
-
-  navigateToRegisterForm() {
-    Actions.register();
+    this.props.registerUser({ email, password });
   }
 
   renderButton() {
     if (this.props.loading) {
       return <Spinner size="large" />;
-    } else {
-      return <Button onPress={this.onLoginPress.bind(this)}>Login</Button>;
     }
+    return <Button onPress={this.onRegisterPress.bind(this)}>Signup</Button>;
   }
 
   renderError() {
@@ -42,11 +49,25 @@ class LoginForm extends Component {
     }
   }
 
-  //----------------------------------
-
   render() {
     return (
       <Card>
+        <CardSection>
+          <Input
+            label="First Name"
+            placeholder="John"
+            onChangeText={this.onFirstNameChange.bind(this)}
+            value={this.props.firstName}
+          />
+        </CardSection>
+        <CardSection>
+          <Input
+            label="Last Name"
+            placeholder="Smith"
+            onChangeText={this.onLastNameChange.bind(this)}
+            value={this.props.lastName}
+          />
+        </CardSection>
         <CardSection>
           <Input
             label="Email"
@@ -67,24 +88,23 @@ class LoginForm extends Component {
         </CardSection>
         {this.renderError()}
         <CardSection>{this.renderButton()}</CardSection>
-        <TouchableOpacity onPress={this.navigateToRegisterForm}>
-          <Text>sign up here</Text>
-        </TouchableOpacity>
       </Card>
     );
   }
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading } = auth;
-  return { email, password, error, loading };
+  const { firstName, lastName, email, password, error, loading } = auth;
+  return { firstName, lastName, email, password, error, loading };
 };
 
 export default connect(mapStateToProps, {
+  firstNameChanged,
+  lastNameChanged,
   emailChanged,
   passwordChanged,
-  loginUser,
-})(LoginForm);
+  registerUser,
+})(RegisterForm);
 
 const styles = {
   errorTextStyle: {
