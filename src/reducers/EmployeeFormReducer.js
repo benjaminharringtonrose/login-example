@@ -9,9 +9,10 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case EMPLOYEE_UPDATE:
+      //  action.payload === { prop: 'name', value: 'Jane'}
       return {
         ...state,
-        [action.payload.prop]: action.payload.value,
+        [action.payload.prop]: action.payload.value, // key interpolation
       };
     default:
       return state;
