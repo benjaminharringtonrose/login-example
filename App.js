@@ -6,6 +6,7 @@ import reducers from './src/reducers';
 import firebase from 'firebase';
 import ReduxThunk from 'redux-thunk';
 import Router from './Router';
+import Actions from 'react-native-router-flux';
 
 class App extends Component {
   componentDidMount() {
@@ -18,7 +19,7 @@ class App extends Component {
       storageBucket: 'manager-65b62.appspot.com',
       messagingSenderId: '265178795526',
       appId: '1:265178795526:web:bff024acfce0730d2a7d87',
-      measurementId: 'G-VQZ8GP6KG0'
+      measurementId: 'G-VQZ8GP6KG0',
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
