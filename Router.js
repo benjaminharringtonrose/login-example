@@ -1,6 +1,5 @@
 import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
-import LoadingScreen from './src/components/common/LoadingScreen';
 import LoginForm from './src/components/LoginForm';
 import EmployeeList from './src/components/EmployeeList';
 import EmployeeCreate from './src/components/EmployeeCreate';

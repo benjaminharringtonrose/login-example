@@ -52,6 +52,8 @@ export const employeeSave = ({ name, phone, shift, uid }) => {
       .set({ name, phone, shift })
       .then(() => {
         dispatch({ type: EMPLOYEE_SAVE_SUCCESS });
+        // This resets the navigation as if it's
+        // visiting the screen for the first time.
         Actions.employeeList({ type: 'reset' });
       });
   };
