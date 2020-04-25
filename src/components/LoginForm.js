@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
@@ -24,11 +24,21 @@ class LoginForm extends Component {
     Actions.register();
   }
 
-  renderButton() {
+  renderLoginButton() {
     if (this.props.loading) {
       return <Spinner size="large" />;
     } else {
       return <Button onPress={this.onLoginPress.bind(this)}>Login</Button>;
+    }
+  }
+
+  renderSignUpButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    } else {
+      return (
+        <Button onPress={this.navigateToRegisterForm}>Sign Up Here</Button>
+      );
     }
   }
 
@@ -46,31 +56,33 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            label="Email"
-            placeholder="email@gmail.com"
-            onChangeText={this.onEmailChange.bind(this)}
-            value={this.props.email}
-          />
-        </CardSection>
+      <View style={{ flex: 5, justifyContent: 'center' }}>
+        <View style={{ flex: 3 }}></View>
+        <Card>
+          <CardSection>
+            <Input
+              label="Email"
+              placeholder="email@gmail.com"
+              onChangeText={this.onEmailChange.bind(this)}
+              value={this.props.email}
+            />
+          </CardSection>
 
-        <CardSection>
-          <Input
-            secureTextEntry
-            label="Password"
-            placeholder="password"
-            onChangeText={this.onPasswordChange.bind(this)}
-            value={this.props.password}
-          />
-        </CardSection>
-        {this.renderError()}
-        <CardSection>{this.renderButton()}</CardSection>
-        <TouchableOpacity onPress={this.navigateToRegisterForm}>
-          <Text>sign up here</Text>
-        </TouchableOpacity>
-      </Card>
+          <CardSection>
+            <Input
+              secureTextEntry
+              label="Password"
+              placeholder="password"
+              onChangeText={this.onPasswordChange.bind(this)}
+              value={this.props.password}
+            />
+          </CardSection>
+          {this.renderError()}
+          <CardSection>{this.renderLoginButton()}</CardSection>
+          <CardSection>{this.renderSignUpButton()}</CardSection>
+        </Card>
+        <View style={{ flex: 1 }}></View>
+      </View>
     );
   }
 }
