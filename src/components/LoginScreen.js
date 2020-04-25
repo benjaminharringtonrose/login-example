@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
-import { loginUser } from '../sagas/authSaga';
+import { loginUser } from '../sagas';
 import { emailChanged, passwordChanged } from '../actions/AuthActions';
 import { Actions } from 'react-native-router-flux';
 
