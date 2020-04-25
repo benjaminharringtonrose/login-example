@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { loginUser } from '../sagas/authSaga';
+import { emailChanged, passwordChanged } from '../actions/AuthActions';
 import { Actions } from 'react-native-router-flux';
 
-class LoginForm extends Component {
+class LoginScreen extends Component {
   //HANDLERS:
   onEmailChange(text) {
     this.props.emailChanged(text);
@@ -29,16 +30,6 @@ class LoginForm extends Component {
       return <Spinner size="large" />;
     } else {
       return <Button onPress={this.onLoginPress.bind(this)}>Login</Button>;
-    }
-  }
-
-  renderSignUpButton() {
-    if (this.props.loading) {
-      return <Spinner size="large" />;
-    } else {
-      return (
-        <Button onPress={this.navigateToRegisterForm}>Sign Up Here</Button>
-      );
     }
   }
 
@@ -79,7 +70,13 @@ class LoginForm extends Component {
           </CardSection>
           {this.renderError()}
           <CardSection>{this.renderLoginButton()}</CardSection>
-          <CardSection>{this.renderSignUpButton()}</CardSection>
+          <CardSection>
+            {
+              <Button onPress={this.navigateToRegisterForm}>
+                Sign Up Here
+              </Button>
+            }
+          </CardSection>
         </Card>
         <View style={{ flex: 1 }}></View>
       </View>
@@ -96,7 +93,7 @@ export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
   loginUser,
-})(LoginForm);
+})(LoginScreen);
 
 const styles = {
   errorTextStyle: {

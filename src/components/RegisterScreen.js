@@ -10,7 +10,7 @@ import {
   registerUser,
 } from '../actions';
 
-class RegisterForm extends Component {
+class RegisterScreen extends Component {
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -104,7 +104,7 @@ export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
   registerUser,
-})(RegisterForm);
+})(RegisterScreen);
 
 const styles = {
   errorTextStyle: {

@@ -1,10 +1,17 @@
 import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
-import LoginForm from './src/components/LoginForm';
+import LoginScreen from './src/components/LoginScreen';
 import EmployeeList from './src/components/EmployeeList';
 import EmployeeCreate from './src/components/EmployeeCreate';
-import RegisterForm from './src/components/RegisterForm';
+import RegisterScreen from './src/components/RegisterScreen';
 import EmployeeEdit from './src/components/EmployeeEdit';
+
+import HomeScreen from './src/components/HomeScreen';
+import PostScreen from './src/components/PostScreen';
+import MessageScreen from './src/components/MessageScreen';
+import NotificationScreen from './src/components/NotificationScreen';
+import ProfileScreen from './src/components/ProfileScreen';
+import { Ionicons } from '@expo/vector-icons';
 
 const RouterComponent = () => {
   return (
@@ -13,25 +20,51 @@ const RouterComponent = () => {
         <Scene key="auth" back={false}>
           <Scene
             key="login"
-            component={LoginForm}
+            component={LoginScreen}
             title="Please Login"
             initial={true}
           />
           <Scene
             key="register"
-            component={RegisterForm}
+            component={RegisterScreen}
             title="Welcome. Sign up here."
           />
         </Scene>
 
         <Scene key="main">
-          <Scene
-            key="employeeList"
-            component={EmployeeList}
-            title="Employees"
-            rightTitle="Add"
-            onRight={() => Actions.employeeCreate()} //Actions comes from flux library
-          />
+          <Scene key="tabs" tabs={true} hideNavBar={true}>
+            <Scene
+              key="home"
+              component={HomeScreen}
+              title="Feed"
+              icon={() => <Ionicons name="ios-home" size={24} />}
+            />
+            <Scene
+              key="notifications"
+              component={NotificationScreen}
+              title="Notifications"
+              icon={() => <Ionicons name="ios-notifications" size={24} />}
+            />
+            <Scene
+              key="post"
+              component={PostScreen}
+              title="Post"
+              icon={() => <Ionicons name="ios-add-circle" size={24} />}
+            />
+            <Scene
+              key="messages"
+              component={MessageScreen}
+              title="Messages"
+              icon={() => <Ionicons name="ios-chatboxes" size={24} />}
+            />
+            <Scene
+              key="profile"
+              component={ProfileScreen}
+              title="Profile"
+              icon={() => <Ionicons name="ios-person" size={24} />}
+            />
+          </Scene>
+
           <Scene
             key="employeeCreate"
             component={EmployeeCreate}
