@@ -31,9 +31,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchLogoutRequest: () => {
-    dispatch({ type: LOGOUT_USER_REQUEST });
-  },
+  dispatchLogoutRequest: () => dispatch({ type: LOGOUT_USER_REQUEST }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

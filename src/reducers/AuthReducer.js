@@ -68,14 +68,15 @@ export default (state = INITIAL_STATE, action) => {
     case LOGOUT_USER_SUCCESS:
       return {
         ...INITIAL_STATE,
-        loading: true,
+        loading: false,
       };
     case LOGOUT_USER_FAIL:
       return {
         ...state,
         error: 'Logout Failed.',
-        loading: true,
+        loading: false,
       };
+
     // REGISTER FORM CASES
     case FIRST_NAME_CHANGED:
       return {
