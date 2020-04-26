@@ -44,5 +44,4 @@ function* watchUserAuthentication() {
 
 export default function* rootSaga() {
   yield fork(watchUserAuthentication);
-  yield takeLatest(LOGIN_USER_REQUEST, loginUserAsync);
 }
