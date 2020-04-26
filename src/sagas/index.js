@@ -6,9 +6,11 @@ import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
+  LOGOUT_USER_REQUEST,
+  LOGOUT_USER_FAIL,
 } from '../actions/types';
 
-export function* loginUserAsync(action) {
+export function* loginUserSaga(action) {
   try {
     const { email, password } = action.payload;
     const auth = firebase.auth();
@@ -38,8 +40,32 @@ function loginUserFail(error) {
   };
 }
 
+export function* logoutUserSaga() {
+  try {
+    const data = yield call(firebase.auth().signOut());
+    yield put(logoutUserSuccess(data));
+    Actions.auth();
+  } catch (error) {
+    logoutUserFail(error);
+  }
+}
+
+function logoutUserSuccess() {
+  return {
+    type: LOGOUT_USER_SUCCESS,
+  };
+}
+
+function logoutUserFail(error) {
+  return {
+    type: LOGOUT_USER_FAIL,
+    payload: error,
+  };
+}
+
 function* watchUserAuthentication() {
-  yield takeLatest(LOGIN_USER_REQUEST, loginUserAsync);
+  yield takeLatest(LOGIN_USER_REQUEST, loginUserSaga);
+  yield takeLatest(LOGOUT_USER_REQUEST, logoutUserSaga);
 }
 
 export default function* rootSaga() {

@@ -9,6 +9,9 @@ import {
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
+  LOGOUT_USER_REQUEST,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_FAIL,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -56,6 +59,22 @@ export default (state = INITIAL_STATE, action) => {
         error: 'Authentication Failed.',
         password: '',
         loading: false,
+      };
+    case LOGOUT_USER_REQUEST:
+      return {
+        ...INITIAL_STATE,
+        loading: true,
+      };
+    case LOGOUT_USER_SUCCESS:
+      return {
+        ...INITIAL_STATE,
+        loading: true,
+      };
+    case LOGOUT_USER_FAIL:
+      return {
+        ...state,
+        error: 'Logout Failed.',
+        loading: true,
       };
     // REGISTER FORM CASES
     case FIRST_NAME_CHANGED:
