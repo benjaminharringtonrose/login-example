@@ -7,8 +7,8 @@ import {
   lastNameChanged,
   emailChanged,
   passwordChanged,
-  registerUser,
 } from '../actions';
+import { REGISTER_USER_REQUEST } from '../actions/types';
 
 class RegisterScreen extends Component {
   onEmailChange(text) {
@@ -29,7 +29,8 @@ class RegisterScreen extends Component {
 
   onRegisterPress() {
     const { email, password } = this.props;
-    this.props.registerUser({ email, password });
+    // this.props.registerUser({ email, password });
+    this.props.dispatchRegisterRequest({ email, password });
   }
 
   renderButton() {
@@ -98,13 +99,20 @@ const mapStateToProps = ({ auth }) => {
   return { firstName, lastName, email, password, error, loading };
 };
 
-export default connect(mapStateToProps, {
-  firstNameChanged,
-  lastNameChanged,
-  emailChanged,
-  passwordChanged,
-  registerUser,
-})(RegisterScreen);
+const mapDispatchToProps = (dispatch) => ({
+  firstNameChanged: (text) => dispatch(firstNameChanged(text)),
+  lastNameChanged: (text) => dispatch(lastNameChanged(text)),
+  emailChanged: (text) => dispatch(emailChanged(text)),
+  passwordChanged: (text) => dispatch(passwordChanged(text)),
+  dispatchRegisterRequest: ({ email, password }) => {
+    dispatch({
+      type: REGISTER_USER_REQUEST,
+      payload: { email, password },
+    });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
 
 const styles = {
   errorTextStyle: {
