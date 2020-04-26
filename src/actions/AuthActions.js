@@ -8,7 +8,7 @@ import {
   PASSWORD_CHANGED,
   FIRST_NAME_CHANGED,
   LAST_NAME_CHANGED,
-  REGISTER_USER,
+  REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
 } from './types';
@@ -43,7 +43,7 @@ export const lastNameChanged = (text) => {
 
 export const registerUser = ({ email, password }) => {
   return (dispatch) => {
-    dispatch({ type: REGISTER_USER });
+    dispatch({ type: REGISTER_USER_REQUEST });
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)

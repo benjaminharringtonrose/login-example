@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
-import { loginUser } from '../sagas';
+import { loginUserAsync } from '../sagas';
 import { emailChanged, passwordChanged } from '../actions/AuthActions';
 import { Actions } from 'react-native-router-flux';
+import { actionChannel } from 'redux-saga/effects';
+import { LOGIN_USER_REQUEST } from '../actions/types';
 
 class LoginScreen extends Component {
   //HANDLERS:
@@ -18,7 +20,7 @@ class LoginScreen extends Component {
 
   onLoginPress() {
     const { email, password } = this.props;
-    this.props.loginUser({ email, password });
+    this.props.dispatchLoginRequest({ email, password });
   }
 
   navigateToRegisterForm() {
@@ -89,11 +91,18 @@ const mapStateToProps = ({ auth }) => {
   return { email, password, error, loading };
 };
 
-export default connect(mapStateToProps, {
-  emailChanged,
-  passwordChanged,
-  loginUser,
-})(LoginScreen);
+const mapDispatchToProps = (dispatch) => ({
+  emailChanged: (text) => dispatch(emailChanged(text)),
+  passwordChanged: (text) => dispatch(passwordChanged(text)),
+  dispatchLoginRequest: ({ email, password }) => {
+    dispatch({
+      type: LOGIN_USER_REQUEST,
+      payload: { email, password },
+    });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
 
 const styles = {
   errorTextStyle: {

@@ -1,12 +1,12 @@
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
-  LOGIN_USER,
+  LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   FIRST_NAME_CHANGED,
   LAST_NAME_CHANGED,
-  REGISTER_USER,
+  REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
 } from '../actions/types';
@@ -37,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         password: action.payload,
       };
-    case LOGIN_USER:
+    case LOGIN_USER_REQUEST:
       return {
         ...state,
         loading: true,
@@ -68,7 +68,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         lastName: action.payload,
       };
-    case REGISTER_USER:
+    case REGISTER_USER_REQUEST:
       return {
         ...state,
         loading: true,
