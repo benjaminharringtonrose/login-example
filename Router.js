@@ -1,11 +1,7 @@
 import React from 'react';
-import { Scene, Router, Actions } from 'react-native-router-flux';
+import { Scene, Router } from 'react-native-router-flux';
 import LoginScreen from './src/components/LoginScreen';
-import EmployeeList from './src/components/EmployeeList';
-import EmployeeCreate from './src/components/EmployeeCreate';
 import RegisterScreen from './src/components/RegisterScreen';
-import EmployeeEdit from './src/components/EmployeeEdit';
-
 import HomeScreen from './src/components/HomeScreen';
 import PostScreen from './src/components/PostScreen';
 import MessageScreen from './src/components/MessageScreen';
@@ -64,17 +60,6 @@ const RouterComponent = () => {
               icon={() => <Ionicons name="ios-person" size={24} />}
             />
           </Scene>
-
-          <Scene
-            key="employeeCreate"
-            component={EmployeeCreate}
-            title="Create an Employee"
-          />
-          <Scene
-            key="employeeEdit"
-            component={EmployeeEdit}
-            title="Edit Employee"
-          />
         </Scene>
       </Scene>
     </Router>

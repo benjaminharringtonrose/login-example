@@ -1,17 +1,17 @@
 // LOGIN
-export const EMAIL_CHANGED = 'email_changed';
-export const PASSWORD_CHANGED = 'password_changed';
-export const LOGIN_USER_REQUEST = 'login_user';
-export const LOGIN_USER_SUCCESS = 'login_user_success';
-export const LOGIN_USER_FAIL = 'login_user_fail';
+export const EMAIL_CHANGED = 'EMAIL_CHANGED';
+export const PASSWORD_CHANGED = 'PASSWORD_CHANGED';
+export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER_FAIL = 'LOGIN_USER_FAIL';
 // REGISTER
-export const FIRST_NAME_CHANGED = 'first_name_changed';
-export const LAST_NAME_CHANGED = 'last_name_changed';
-export const REGISTER_USER_REQUEST = 'register_user';
-export const REGISTER_USER_SUCCESS = 'register_user_success';
-export const REGISTER_USER_FAIL = 'register_user_fail';
+export const FIRST_NAME_CHANGED = 'FIRST_NAME_CHANGED';
+export const LAST_NAME_CHANGED = 'LAST_NAME_CHANGED';
+export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAIL = 'REGISTER_USER_FAIL';
 //EMPLOYEE CREATION
-export const EMPLOYEE_UPDATE = 'employee_update';
-export const EMPLOYEE_CREATE = 'employee_create';
-export const EMPLOYEES_FETCH_SUCCESS = 'employees_fetch_success';
-export const EMPLOYEE_SAVE_SUCCESS = 'employee_save_success';
+export const EMPLOYEE_UPDATE = 'EMPLOYEE_UPDATE';
+export const EMPLOYEE_CREATE = 'EMPLOYEE_CREATE';
+export const EMPLOYEES_FETCH_SUCCESS = 'EMPLOYEES_FETCH_SUCCESS';
+export const EMPLOYEE_SAVE_SUCCESS = 'EMPLOYEE_SAVE_SUCCESS';
