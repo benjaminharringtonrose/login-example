@@ -12,7 +12,7 @@ import {
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
-} from '../actions/types';
+} from './src/actions/types';
 
 // LOGIN SAGA
 
@@ -83,6 +83,7 @@ export function* registerUserSaga(action) {
       password
     );
     yield put(registerUserSuccess(data));
+    console.log(data);
     Actions.main();
   } catch (error) {
     yield put(registerUserFail(error));
@@ -103,11 +104,15 @@ function registerUserFail(error) {
   };
 }
 
+// ACTION LISTENER
+
 function* watchUserAuthentication() {
   yield takeLatest(LOGIN_USER_REQUEST, loginUserSaga);
   yield takeLatest(LOGOUT_USER_REQUEST, logoutUserSaga);
   yield takeLatest(REGISTER_USER_REQUEST, registerUserSaga);
 }
+
+// ROOT SAGA
 
 export default function* rootSaga() {
   yield fork(watchUserAuthentication);

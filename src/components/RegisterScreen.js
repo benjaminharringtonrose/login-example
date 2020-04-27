@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import UserPermissions from '../permissions';
+import * as ImagePicker from 'expo-image-picker';
 import {
   firstNameChanged,
   lastNameChanged,
@@ -11,6 +14,13 @@ import {
 import { REGISTER_USER_REQUEST } from '../actions/types';
 
 class RegisterScreen extends Component {
+  componentDidMount() {
+    console.log('COMPONENT_DID_MOUNT', this.props);
+  }
+  componentDidUpdate() {
+    console.log('COMPONENT_DID_UPDATE', this.props);
+  }
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -33,6 +43,18 @@ class RegisterScreen extends Component {
     this.props.dispatchRegisterRequest({ email, password });
   }
 
+  onPickAvatar = async () => {
+    UserPermissions.getCameraPermission();
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+    if (!result.cancelled) {
+      this.setState({ avatar: result.uri });
+    }
+  };
+
   renderButton() {
     if (this.props.loading) {
       return <Spinner size="large" />;
@@ -52,51 +74,77 @@ class RegisterScreen extends Component {
 
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            label="First Name"
-            placeholder="John"
-            onChangeText={this.onFirstNameChange.bind(this)}
-            value={this.props.firstName}
-          />
-        </CardSection>
-        <CardSection>
-          <Input
-            label="Last Name"
-            placeholder="Smith"
-            onChangeText={this.onLastNameChange.bind(this)}
-            value={this.props.lastName}
-          />
-        </CardSection>
-        <CardSection>
-          <Input
-            label="Email"
-            placeholder="email@gmail.com"
-            onChangeText={this.onEmailChange.bind(this)}
-            value={this.props.email}
-          />
-        </CardSection>
+      <View style={{ flex: 9 }}>
+        <View style={{ flex: 9 }}></View>
+        <Image
+          source={require('../../assets/pobFooter.png')}
+          style={styles.footer}
+        />
 
-        <CardSection>
-          <Input
-            secureTextEntry
-            label="Password"
-            placeholder="password"
-            onChangeText={this.onPasswordChange.bind(this)}
-            value={this.props.password}
-          />
-        </CardSection>
-        {this.renderError()}
-        <CardSection>{this.renderButton()}</CardSection>
-      </Card>
+        <Text
+          style={styles.greeting}
+        >{`Welcome!\nSign up to get started.`}</Text>
+        <View style={{ flex: 1 }}></View>
+        <TouchableOpacity
+          style={styles.avatarPlaceholder}
+          onPress={this.onPickAvatar}
+        >
+          <Image source={{ uri: this.props.avatar }} style={styles.avatar} />
+          <Ionicons
+            name="ios-add"
+            size={40}
+            color="#FFF"
+            style={styles.addIcon}
+          ></Ionicons>
+        </TouchableOpacity>
+        <View style={{ flex: 1 }}></View>
+        <Card>
+          <CardSection>
+            <Input
+              label="First Name"
+              placeholder="John"
+              onChangeText={this.onFirstNameChange.bind(this)}
+              value={this.props.firstName}
+            />
+          </CardSection>
+          <CardSection>
+            <Input
+              label="Last Name"
+              placeholder="Smith"
+              onChangeText={this.onLastNameChange.bind(this)}
+              value={this.props.lastName}
+            />
+          </CardSection>
+          <CardSection>
+            <Input
+              label="Email"
+              placeholder="email@gmail.com"
+              onChangeText={this.onEmailChange.bind(this)}
+              value={this.props.email}
+            />
+          </CardSection>
+
+          <CardSection>
+            <Input
+              secureTextEntry
+              label="Password"
+              placeholder="password"
+              onChangeText={this.onPasswordChange.bind(this)}
+              value={this.props.password}
+            />
+          </CardSection>
+          {this.renderError()}
+          <CardSection>{this.renderButton()}</CardSection>
+        </Card>
+        <View style={{ flex: 1 }}></View>
+      </View>
     );
   }
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { firstName, lastName, email, password, error, loading } = auth;
-  return { firstName, lastName, email, password, error, loading };
+  const { firstName, lastName, avatar, email, password, error, loading } = auth;
+  return { firstName, lastName, avatar, email, password, error, loading };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -110,14 +158,48 @@ const mapDispatchToProps = (dispatch) => ({
       payload: { email, password },
     });
   },
+  dispatchAvatarRequest: ({ avatar }) => {
+    dispatch({
+      type: AVATAR_REQUEST,
+      payload: { avatar },
+    });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
 
-const styles = {
+const styles = StyleSheet.create({
   errorTextStyle: {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red',
   },
-};
+  footer: {
+    position: 'absolute',
+    width: '100%',
+  },
+  greeting: {
+    fontSize: 18,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: '#D9AD26',
+  },
+  avatarPlaceholder: {
+    alignSelf: 'center',
+    width: 120,
+    height: 120,
+    backgroundColor: '#D9AD26',
+    borderRadius: 60,
+  },
+  avatar: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
+  addIcon: {
+    alignSelf: 'center',
+    marginTop: 38,
+    marginLeft: 2,
+  },
+});

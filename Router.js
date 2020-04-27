@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 const RouterComponent = () => {
   return (
     <Router>
-      <Scene key="root" hideNavBar>
+      <Scene key="root" hideNavBar={true}>
         <Scene key="auth" back={false}>
           <Scene
             key="login"

@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  BackgroundImage,
+  StatusBar,
+  LayoutAnimation,
+} from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged } from '../actions/AuthActions';
@@ -7,7 +17,6 @@ import { Actions } from 'react-native-router-flux';
 import { LOGIN_USER_REQUEST } from '../actions/types';
 
 class LoginScreen extends Component {
-  //HANDLERS:
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -47,8 +56,17 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 5, justifyContent: 'center' }}>
-        <View style={{ flex: 3 }}></View>
+      <View style={{ flex: 9, justifyContent: 'center' }}>
+        <Image
+          resizeMode={'cover'}
+          source={require('../../assets/pobHeader.jpg')}
+          style={styles.header}
+        />
+        <Image
+          source={require('../../assets/pobFooter.png')}
+          style={styles.footer}
+        />
+        <View style={{ flex: 9 }}></View>
         <Card>
           <CardSection>
             <Input
@@ -102,10 +120,20 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
 
-const styles = {
+const styles = StyleSheet.create({
   errorTextStyle: {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red',
   },
-};
+  header: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // position: "absolute",
+  },
+  footer: {
+    position: 'absolute',
+    width: '100%',
+  },
+});
