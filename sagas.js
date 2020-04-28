@@ -16,6 +16,7 @@ import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAIL,
+  SET_USER_SUCCESS,
 } from './src/actions/types';
 
 // LOGIN SAGA
@@ -54,17 +55,18 @@ function loginUserFail(error) {
 
 export function* logoutUserSaga() {
   try {
-    yield call(() => firebase.auth().signOut());
-    yield put(logoutUserSuccess());
+    const data = yield call(() => firebase.auth().signOut());
+    yield put(logoutUserSuccess(data));
     Actions.auth();
   } catch (error) {
     yield put(logoutUserFail(error));
   }
 }
 
-function logoutUserSuccess() {
+function logoutUserSuccess(data) {
   return {
     type: LOGOUT_USER_SUCCESS,
+    payload: data,
   };
 }
 
@@ -118,7 +120,14 @@ addAvatar = async ({ data }) => {
 
 export function* registerUserSaga(action) {
   try {
-    const { email, password, firstName, lastName, avatar } = action.payload;
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      avatar,
+      user,
+    } = action.payload;
     const auth = firebase.auth();
     const data = yield call(
       [auth, auth.createUserWithEmailAndPassword],
@@ -130,10 +139,11 @@ export function* registerUserSaga(action) {
       .collection('users')
       .doc(`${firebase.auth().currentUser.uid}`);
     db.set({
-      firstName: `${firstName}`,
-      lastName: `${lastName}`,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       avatar: avatar,
+      user: user,
     });
     addAvatar(avatar);
     yield put(registerUserSuccess(data));
@@ -159,10 +169,17 @@ function registerUserFail(error) {
 
 export function* fetchUserSaga() {
   try {
-    const { currentUser } = firebase.auth();
-    const ref = firebase.firestore().doc(`${currentUser}`);
-    const result = yield call([ref, () => ref.get]);
-    yield put(fetchUserSuccess(result));
+    const user = firebase.auth().currentUser.uid;
+    const db = yield call(() =>
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user)
+        .onSnapshot((doc) => {
+          put(fetchUserSuccess(doc.get.user));
+        })
+    );
+    // yield put(fetchUserSuccess(currentUser));
   } catch (error) {
     yield put(fetchUserFail(error));
   }
@@ -178,6 +195,13 @@ function fetchUserFail(error) {
   return {
     type: FETCH_USER_FAIL,
     payload: error,
+  };
+}
+
+function setUserSuccess(data) {
+  return {
+    type: SET_USER_SUCCESS,
+    payload: data,
   };
 }
 

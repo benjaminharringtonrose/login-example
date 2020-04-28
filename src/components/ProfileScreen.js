@@ -7,27 +7,24 @@ import firebase from 'firebase';
 require('firebase/firestore');
 
 class ProfileScreen extends React.Component {
-  state = {
-    user: {},
-  };
-  unsubscribe = null;
+  // unsubscribe = null;
   componentDidMount() {
-    const user = firebase.auth().currentUser.uid;
-    this.unsubscribe = firebase
-      .firestore()
-      .collection('users')
-      .doc(user)
-      .onSnapshot((doc) => {
-        this.setState({ user: doc.data() });
-      });
+    // const user = firebase.auth().currentUser.uid;
+    // this.dispatchFetchUser();
+    // this.unsubscribe = firebase
+    //   .firestore()
+    //   .collection('users')
+    //   .doc(user)
+    //   .get()
+    //   .then((doc) => {
+    //     // this.props.dispatchFetchUser();
+    //     // this.setState({ user: doc.data() });
+    //   });
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-  componentDidMount() {
-    this.props.userFetch();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
   onLogoutPress() {
     this.props.dispatchLogoutRequest();
@@ -69,7 +66,7 @@ const mapStateToProps = ({ auth }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogoutRequest: () => dispatch({ type: LOGOUT_USER_REQUEST }),
-  userFetch: () => dispatch({ type: FETCH_USER_REQUEST }),
+  dispatchFetchUser: () => dispatch({ type: FETCH_USER_REQUEST }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
