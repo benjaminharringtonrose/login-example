@@ -2,6 +2,16 @@ import { fork, takeLatest } from 'redux-saga/effects';
 import { put, call } from 'redux-saga/effects';
 import firebase from 'firebase';
 require('firebase/firestore');
+import {
+  getCollection,
+  getDocById,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  saveFileOnStorage,
+  deleteFileOnStorage,
+  getPathReference,
+} from './firebaseAPI';
 import { Actions } from 'react-native-router-flux';
 import {
   LOGIN_USER_REQUEST,
@@ -17,7 +27,24 @@ import {
   FETCH_USER_SUCCESS,
   FETCH_USER_FAIL,
   SET_USER_SUCCESS,
-} from './src/actions/types';
+} from './actions/types';
+
+export function* fetchUserSaga(action) {
+  try {
+    const { uid } = action.payload;
+    const doc = yield getDocById('users', uid);
+    const user = {
+      ...doc.data(),
+      id: doc.uid,
+    };
+    yield put(fetchUserSuccess(user));
+  } catch (error) {
+    yield put(fetchUserFail({ error }));
+  }
+  // finally {
+  //   yield put(manageLoading.fulfill());
+  // }
+}
 
 // LOGIN SAGA
 
@@ -30,6 +57,7 @@ export function* loginUserSaga(action) {
       email,
       password
     );
+
     yield put(loginUserSuccess(data));
     Actions.main();
   } catch (error) {
@@ -56,17 +84,16 @@ function loginUserFail(error) {
 export function* logoutUserSaga() {
   try {
     const data = yield call(() => firebase.auth().signOut());
-    yield put(logoutUserSuccess(data));
-    Actions.auth();
+    yield Actions.auth();
+    yield put(logoutUserSuccess());
   } catch (error) {
     yield put(logoutUserFail(error));
   }
 }
 
-function logoutUserSuccess(data) {
+function logoutUserSuccess() {
   return {
     type: LOGOUT_USER_SUCCESS,
-    payload: data,
   };
 }
 
@@ -157,20 +184,6 @@ function registerUserFail(error) {
     type: REGISTER_USER_FAIL,
     payload: error,
   };
-}
-
-export function* fetchUserSaga() {
-  try {
-    const user = firebase.auth().currentUser.uid;
-    const db = yield call(() =>
-      firebase.firestore().collection('users').doc(user)
-    );
-    yield put(fetchUserSuccess(db));
-
-    // yield put(fetchUserSuccess(currentUser));
-  } catch (error) {
-    yield put(fetchUserFail(error));
-  }
 }
 
 function fetchUserSuccess(data) {

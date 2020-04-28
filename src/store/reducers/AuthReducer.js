@@ -13,6 +13,9 @@ import {
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
   AVATAR_CHANGED,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -64,11 +67,11 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
     case LOGOUT_USER_REQUEST:
       return {
         ...state,
-        ...INITIAL_STATE,
         loading: true,
       };
     case LOGOUT_USER_SUCCESS:
       return {
+        ...state,
         ...INITIAL_STATE,
         loading: false,
       };
@@ -114,6 +117,27 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         avatar: action.payload,
+      };
+    case FETCH_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        user: action.payload,
+        loading: false,
+        error: '',
+      };
+    case FETCH_USER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        password: '',
+        loading: false,
       };
     default:
       return state;

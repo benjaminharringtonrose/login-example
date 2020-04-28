@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import Router from './Router';
-import store from './store';
+import store from './src/store/store';
 
 class App extends Component {
   componentDidMount() {

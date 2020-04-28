@@ -5,14 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import UserPermissions from '../permissions';
 import * as ImagePicker from 'expo-image-picker';
-import { REGISTER_USER_REQUEST, AVATAR_REQUEST } from '../actions/types';
+import { REGISTER_USER_REQUEST } from '../store/actions/types';
 import {
   firstNameChanged,
   lastNameChanged,
   emailChanged,
   passwordChanged,
   avatarChanged,
-} from '../actions';
+} from '../store/actions';
 
 class RegisterScreen extends Component {
   // state = {
@@ -62,8 +62,6 @@ class RegisterScreen extends Component {
     });
     if (!result.cancelled) {
       this.props.avatarChanged(result.uri);
-
-      // this.setState({ user: { ...this.state.user, avatar: result.uri } });
     }
   };
 

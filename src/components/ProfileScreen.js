@@ -2,15 +2,19 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, CardSection, Card } from './common';
-import { LOGOUT_USER_REQUEST, FETCH_USER_REQUEST } from '../actions/types';
+import {
+  LOGOUT_USER_REQUEST,
+  FETCH_USER_REQUEST,
+} from '../store/actions/types';
 import firebase from 'firebase';
 require('firebase/firestore');
 
 class ProfileScreen extends React.Component {
   // unsubscribe = null;
   componentDidMount() {
-    // const user = firebase.auth().currentUser.uid;
-    this.props.dispatchFetchUser();
+    const user = firebase.auth().currentUser.uid;
+    // this.props.dispatchFetchUser(user);
+
     // this.unsubscribe = firebase
     //   .firestore()
     //   .collection('users')
@@ -66,7 +70,8 @@ const mapStateToProps = ({ auth }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogoutRequest: () => dispatch({ type: LOGOUT_USER_REQUEST }),
-  dispatchFetchUser: () => dispatch({ type: FETCH_USER_REQUEST }),
+  dispatchFetchUser: (user) =>
+    dispatch({ type: FETCH_USER_REQUEST, type: user }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
