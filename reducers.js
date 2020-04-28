@@ -13,9 +13,11 @@ import {
   LOGOUT_USER_REQUEST,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
-  AVATAR_REQUEST,
-  AVATAR_SUCCESS,
-  AVATAR_FAIL,
+  AVATAR_CHANGED,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
+  GET_CURRENT_USER,
 } from './src/actions/types';
 
 const INITIAL_STATE = {
@@ -25,6 +27,7 @@ const INITIAL_STATE = {
     avatar: undefined,
     email: '',
     password: '',
+    uid: '',
   },
   error: '',
   loading: false,
@@ -33,7 +36,7 @@ const INITIAL_STATE = {
 // AUTH REDUCER
 
 export const authReducer = (state = INITIAL_STATE, action) => {
-  console.log(action);
+  console.log('ACTION', action);
   switch (action.type) {
     case EMAIL_CHANGED:
       return {
@@ -113,22 +116,35 @@ export const authReducer = (state = INITIAL_STATE, action) => {
         password: '',
         loading: false,
       };
-    case AVATAR_REQUEST:
+    case AVATAR_CHANGED:
+      return {
+        ...state.user,
+        avatar: action.payload,
+      };
+    case FETCH_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      };
+    case FETCH_USER_SUCCESS:
       return {
         ...state,
         user: action.payload,
-        loading: true,
+        loading: false,
+        error: '',
       };
-    case AVATAR_SUCCESS:
+    case FETCH_USER_FAIL:
       return {
         ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case GET_CURRENT_USER:
+      return {
+        ...state,
+        ...INITIAL_STATE,
         user: action.payload,
-        loading: true,
-      };
-    case AVATAR_FAIL:
-      return {
-        ...state,
-        error: 'Avatar picker failed. Please try again.',
         loading: false,
       };
     default:

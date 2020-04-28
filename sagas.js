@@ -1,6 +1,7 @@
 import { fork, takeLatest } from 'redux-saga/effects';
 import { put, call } from 'redux-saga/effects';
 import firebase from 'firebase';
+require('firebase/firestore');
 import { Actions } from 'react-native-router-flux';
 import {
   LOGIN_USER_REQUEST,
@@ -12,6 +13,9 @@ import {
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
 } from './src/actions/types';
 
 // LOGIN SAGA
@@ -71,19 +75,68 @@ function logoutUserFail(error) {
   };
 }
 
+// PHOTO UPLOAD ASYNC
+
+uploadPhotoAsync = async (uri, filename) => {
+  return new Promise(async (res, rej) => {
+    const response = await fetch(uri);
+    const file = await response.blob();
+    let upload = firebase.storage().ref(filename).put(file);
+    upload.on(
+      'state_changed',
+      (snapshot) => {},
+      (err) => {
+        rej(err);
+      },
+      async () => {
+        const url = await upload.snapshot.ref.getDownloadURL();
+        res(url);
+      }
+    );
+  }).catch((error) => {
+    console.error('upload photo async error: ', error);
+  });
+};
+
+addAvatar = async ({ data }) => {
+  try {
+    const remoteUri = null;
+    if ({ data }) {
+      remoteUri = await this.uploadPhotoAsync(
+        { data },
+        `avatars/${firebase.auth().currentUser.uid}`
+      );
+      db.set({ avatar: remoteUri }, { merge: true });
+    }
+  } catch (error) {
+    console.log('hereweare');
+    alert('Error: ', error);
+  }
+};
+
 // REGISTER SAGA
 
 export function* registerUserSaga(action) {
   try {
-    const { email, password } = action.payload;
+    const { email, password, firstName, lastName, avatar } = action.payload;
     const auth = firebase.auth();
     const data = yield call(
       [auth, auth.createUserWithEmailAndPassword],
       email,
       password
     );
+    const db = firebase
+      .firestore()
+      .collection('users')
+      .doc(`${firebase.auth().currentUser.uid}`);
+    db.set({
+      firstName: `${firstName}`,
+      lastName: `${lastName}`,
+      email: email,
+      avatar: avatar,
+    });
+    addAvatar(avatar);
     yield put(registerUserSuccess(data));
-    console.log(data);
     Actions.main();
   } catch (error) {
     yield put(registerUserFail(error));
@@ -104,12 +157,37 @@ function registerUserFail(error) {
   };
 }
 
+export function* fetchUserSaga(action) {
+  try {
+    const { user } = action.payload;
+    const db = firebase.firestore().collection('users').doc({ user });
+    const result = yield call([db, db.get]);
+    yield put(fetchUserSuccess(result));
+  } catch (error) {
+    yield put(fetchUserFail(error));
+  }
+}
+
+function fetchUserSuccess(data) {
+  return {
+    type: FETCH_USER_SUCCESS,
+    payload: data,
+  };
+}
+function fetchUserFail(error) {
+  return {
+    type: FETCH_USER_FAIL,
+    payload: error,
+  };
+}
+
 // ACTION LISTENER
 
 function* watchUserAuthentication() {
   yield takeLatest(LOGIN_USER_REQUEST, loginUserSaga);
   yield takeLatest(LOGOUT_USER_REQUEST, logoutUserSaga);
   yield takeLatest(REGISTER_USER_REQUEST, registerUserSaga);
+  yield takeLatest(FETCH_USER_REQUEST, fetchUserSaga);
 }
 
 // ROOT SAGA

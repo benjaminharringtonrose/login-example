@@ -5,6 +5,7 @@ import {
   PASSWORD_CHANGED,
   FIRST_NAME_CHANGED,
   LAST_NAME_CHANGED,
+  AVATAR_CHANGED,
 } from './types';
 
 export const firstNameChanged = (text) => {
@@ -32,5 +33,12 @@ export const passwordChanged = (text) => {
   return {
     type: PASSWORD_CHANGED,
     payload: text,
+  };
+};
+
+export const avatarChanged = (uri) => {
+  return {
+    type: AVATAR_CHANGED,
+    payload: uri,
   };
 };

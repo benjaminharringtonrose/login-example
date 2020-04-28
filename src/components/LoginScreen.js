@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  BackgroundImage,
-  StatusBar,
-  LayoutAnimation,
-} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged } from '../actions/AuthActions';
