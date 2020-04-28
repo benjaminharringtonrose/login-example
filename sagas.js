@@ -157,11 +157,11 @@ function registerUserFail(error) {
   };
 }
 
-export function* fetchUserSaga(action) {
+export function* fetchUserSaga() {
   try {
-    const { user } = action.payload;
-    const db = firebase.firestore().collection('users').doc({ user });
-    const result = yield call([db, db.get]);
+    const { currentUser } = firebase.auth();
+    const ref = firebase.firestore().doc(`${currentUser}`);
+    const result = yield call([ref, () => ref.get]);
     yield put(fetchUserSuccess(result));
   } catch (error) {
     yield put(fetchUserFail(error));

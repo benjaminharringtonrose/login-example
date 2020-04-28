@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import UserPermissions from '../permissions';
 import * as ImagePicker from 'expo-image-picker';
-import { REGISTER_USER_REQUEST } from '../actions/types';
+import { REGISTER_USER_REQUEST, AVATAR_REQUEST } from '../actions/types';
 import {
   firstNameChanged,
   lastNameChanged,
@@ -43,6 +43,7 @@ class RegisterScreen extends Component {
   }
 
   onPickAvatar = async () => {
+    const { avatar } = this.props;
     UserPermissions.getCameraPermission();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -54,6 +55,11 @@ class RegisterScreen extends Component {
       this.props.avatarChanged(result.uri);
     }
   };
+
+  // onPickAvatar() {
+  //   const { avatar } = this.props;
+  //   this.dispatchAvatarRequest({ avatar });
+  // }
 
   renderButton() {
     if (this.props.loading) {
@@ -162,6 +168,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({
       type: REGISTER_USER_REQUEST,
       payload: { email, password, firstName, lastName, avatar },
+    });
+  },
+  dispatchAvatarRequest: ({ avatar }) => {
+    dispatch({
+      type: AVATAR_REQUEST,
+      payload: { avatar },
     });
   },
   avatarChanged: (result) => dispatch(avatarChanged(result)),

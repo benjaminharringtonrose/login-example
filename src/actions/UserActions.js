@@ -1,8 +1,8 @@
-import { GET_CURRENT_USER } from './types';
+import { FETCH_USER_SUCCESS } from './types';
 
-export const getCurrentUser = (user) => {
+export const userFetch = (user) => {
   return {
-    type: GET_CURRENT_USER,
+    type: FETCH_USER_SUCCESS,
     payload: user,
   };
 };

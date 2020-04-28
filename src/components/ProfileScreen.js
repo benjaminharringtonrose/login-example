@@ -2,34 +2,37 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, CardSection, Card } from './common';
-import { LOGOUT_USER_REQUEST, FETCH_USER_REQUEST } from '../actions/types';
-import { getCurrentUser } from '../actions/UserActions';
+import {
+  LOGOUT_USER_REQUEST,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+} from '../actions/types';
+import { userFetch } from '../actions/UserActions';
 import firebase from 'firebase';
 require('firebase/firestore');
 
 class ProfileScreen extends React.Component {
-  state = {
-    user: {},
-  };
-  unsubscribe = null;
-  componentDidMount() {
-    // this.props.dispatchFetchUserRequest();
-    const user = firebase.auth().currentUser.uid;
-    // this.props.getCurrentUser(user);
-    // this.props.dispatchFetchUserRequest(user);
-    this.unsubscribe = firebase
-      .firestore()
-      .collection('users')
-      .doc(user)
-      .onSnapshot((doc) => {
-        this.setState({ user: doc.data() });
-        console.log('user:  ', this.props.user);
-      });
-  }
+  // state = {
+  //   user: {},
+  // };
+  // unsubscribe = null;
+  // componentDidMount() {
+  //   const user = firebase.auth().currentUser.uid;
+  //   this.unsubscribe = firebase
+  //     .firestore()
+  //     .collection('users')
+  //     .doc(user)
+  //     .onSnapshot((doc) => {
+  //       this.setState({ user: doc.data() });
+  //     });
+  // }
 
   // componentWillUnmount() {
   //   this.unsubscribe();
   // }
+  componentDidMount() {
+    this.props.userFetch();
+  }
 
   onLogoutPress() {
     this.props.dispatchLogoutRequest();
@@ -70,10 +73,8 @@ const mapStateToProps = ({ auth }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getCurrentUser: (user) => dispatch(getCurrentUser(user)),
   dispatchLogoutRequest: () => dispatch({ type: LOGOUT_USER_REQUEST }),
-  dispatchFetchUserRequest: (data) =>
-    dispatch({ type: FETCH_USER_REQUEST, payload: data }),
+  userFetch: () => dispatch({ type: FETCH_USER_REQUEST }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

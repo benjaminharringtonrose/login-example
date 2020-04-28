@@ -14,11 +14,8 @@ import {
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
   AVATAR_CHANGED,
-  FETCH_USER_REQUEST,
-  FETCH_USER_SUCCESS,
-  FETCH_USER_FAIL,
   GET_CURRENT_USER,
-} from './src/actions/types';
+} from '../actions/types';
 
 const INITIAL_STATE = {
   user: {
@@ -35,7 +32,7 @@ const INITIAL_STATE = {
 
 // AUTH REDUCER
 
-export const authReducer = (state = INITIAL_STATE, action) => {
+const AuthReducer = (state = INITIAL_STATE, action) => {
   console.log('ACTION', action);
   switch (action.type) {
     case EMAIL_CHANGED:
@@ -70,11 +67,12 @@ export const authReducer = (state = INITIAL_STATE, action) => {
       };
     case LOGOUT_USER_REQUEST:
       return {
-        ...INITIAL_STATE,
+        ...state,
         loading: true,
       };
     case LOGOUT_USER_SUCCESS:
       return {
+        ...state,
         ...INITIAL_STATE,
         loading: false,
       };
@@ -121,25 +119,6 @@ export const authReducer = (state = INITIAL_STATE, action) => {
         ...state.user,
         avatar: action.payload,
       };
-    case FETCH_USER_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: '',
-      };
-    case FETCH_USER_SUCCESS:
-      return {
-        ...state,
-        user: action.payload,
-        loading: false,
-        error: '',
-      };
-    case FETCH_USER_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
     case GET_CURRENT_USER:
       return {
         ...state,
@@ -152,8 +131,4 @@ export const authReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
-
-export default rootReducer;
+export default AuthReducer;
