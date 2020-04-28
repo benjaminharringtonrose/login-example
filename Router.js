@@ -7,6 +7,7 @@ import PostScreen from './src/components/PostScreen';
 import MessageScreen from './src/components/MessageScreen';
 import NotificationScreen from './src/components/NotificationScreen';
 import ProfileScreen from './src/components/ProfileScreen';
+import LoadingScreen from './src/components/LoadingScreen';
 import { Ionicons } from '@expo/vector-icons';
 
 const RouterComponent = () => {
@@ -14,11 +15,17 @@ const RouterComponent = () => {
     <Router>
       <Scene key="root" hideNavBar={true}>
         <Scene key="auth" back={false}>
+          {/* <Scene
+            key="loading"
+            component={LoadingScreen}
+            title="Please Login"
+            initial={true}
+          /> */}
           <Scene
             key="login"
             component={LoginScreen}
             title="Please Login"
-            initial={true}
+            // initial={true}
           />
           <Scene
             key="register"

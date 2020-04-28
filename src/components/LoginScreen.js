@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import { emailChanged, passwordChanged } from '../actions/AuthActions';
 import { Actions } from 'react-native-router-flux';
 import { LOGIN_USER_REQUEST } from '../actions/types';
 
 class LoginScreen extends Component {
+  // componentWillMount() {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     user ? Actions.main() : Actions.login();
+  //   });
+  // }
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }

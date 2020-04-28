@@ -43,7 +43,6 @@ class RegisterScreen extends Component {
   }
 
   onPickAvatar = async () => {
-    const { avatar } = this.props;
     UserPermissions.getCameraPermission();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -51,15 +50,9 @@ class RegisterScreen extends Component {
       aspect: [4, 3],
     });
     if (!result.cancelled) {
-      console.log('result.uri', result.uri);
       this.props.avatarChanged(result.uri);
     }
   };
-
-  // onPickAvatar() {
-  //   const { avatar } = this.props;
-  //   this.dispatchAvatarRequest({ avatar });
-  // }
 
   renderButton() {
     if (this.props.loading) {

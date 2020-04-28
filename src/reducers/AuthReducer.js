@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
@@ -14,18 +13,16 @@ import {
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
   AVATAR_CHANGED,
-  GET_CURRENT_USER,
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  user: {
-    firstName: '',
-    lastName: '',
-    avatar: undefined,
-    email: '',
-    password: '',
-    uid: '',
-  },
+  user: {},
+  firstName: '',
+  lastName: '',
+  avatar: undefined,
+  email: '',
+  password: '',
+  uid: '',
   error: '',
   loading: false,
 };
@@ -68,11 +65,11 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
     case LOGOUT_USER_REQUEST:
       return {
         ...state,
+        ...INITIAL_STATE,
         loading: true,
       };
     case LOGOUT_USER_SUCCESS:
       return {
-        ...state,
         ...INITIAL_STATE,
         loading: false,
       };
@@ -118,13 +115,6 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state.user,
         avatar: action.payload,
-      };
-    case GET_CURRENT_USER:
-      return {
-        ...state,
-        ...INITIAL_STATE,
-        user: action.payload,
-        loading: false,
       };
     default:
       return state;

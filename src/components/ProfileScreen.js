@@ -2,34 +2,29 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, CardSection, Card } from './common';
-import {
-  LOGOUT_USER_REQUEST,
-  FETCH_USER_REQUEST,
-  FETCH_USER_SUCCESS,
-} from '../actions/types';
-import { userFetch } from '../actions/UserActions';
+import { LOGOUT_USER_REQUEST, FETCH_USER_REQUEST } from '../actions/types';
 import firebase from 'firebase';
 require('firebase/firestore');
 
 class ProfileScreen extends React.Component {
-  // state = {
-  //   user: {},
-  // };
-  // unsubscribe = null;
-  // componentDidMount() {
-  //   const user = firebase.auth().currentUser.uid;
-  //   this.unsubscribe = firebase
-  //     .firestore()
-  //     .collection('users')
-  //     .doc(user)
-  //     .onSnapshot((doc) => {
-  //       this.setState({ user: doc.data() });
-  //     });
-  // }
+  state = {
+    user: {},
+  };
+  unsubscribe = null;
+  componentDidMount() {
+    const user = firebase.auth().currentUser.uid;
+    this.unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(user)
+      .onSnapshot((doc) => {
+        this.setState({ user: doc.data() });
+      });
+  }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
   componentDidMount() {
     this.props.userFetch();
   }
