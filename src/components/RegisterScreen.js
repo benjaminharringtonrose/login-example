@@ -15,6 +15,16 @@ import {
 } from '../actions';
 
 class RegisterScreen extends Component {
+  // state = {
+  //   user: {
+  //     name: '',
+  //     email: '',
+  //     password: '',
+  //     avatar: undefined,
+  //   },
+  //   errorMessage: null,
+  // };
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -32,13 +42,14 @@ class RegisterScreen extends Component {
   }
 
   onRegisterPress() {
-    const { email, password, firstName, lastName, avatar } = this.props;
+    const { email, password, firstName, lastName, avatar, user } = this.props;
     this.props.dispatchRegisterRequest({
       email,
       password,
       firstName,
       lastName,
       avatar,
+      user,
     });
   }
 
@@ -51,6 +62,8 @@ class RegisterScreen extends Component {
     });
     if (!result.cancelled) {
       this.props.avatarChanged(result.uri);
+
+      // this.setState({ user: { ...this.state.user, avatar: result.uri } });
     }
   };
 
@@ -142,8 +155,17 @@ class RegisterScreen extends Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { firstName, lastName, avatar, email, password, error, loading } = auth;
-  return { firstName, lastName, avatar, email, password, error, loading };
+  const {
+    firstName,
+    lastName,
+    avatar,
+    email,
+    password,
+    error,
+    loading,
+    user,
+  } = auth;
+  return { firstName, lastName, avatar, email, password, error, loading, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -151,25 +173,20 @@ const mapDispatchToProps = (dispatch) => ({
   lastNameChanged: (text) => dispatch(lastNameChanged(text)),
   emailChanged: (text) => dispatch(emailChanged(text)),
   passwordChanged: (text) => dispatch(passwordChanged(text)),
+  avatarChanged: (result) => dispatch(avatarChanged(result)),
   dispatchRegisterRequest: ({
     email,
     password,
     firstName,
     lastName,
     avatar,
+    user,
   }) => {
     dispatch({
       type: REGISTER_USER_REQUEST,
-      payload: { email, password, firstName, lastName, avatar },
+      payload: { email, password, firstName, lastName, avatar, user },
     });
   },
-  dispatchAvatarRequest: ({ avatar }) => {
-    dispatch({
-      type: AVATAR_REQUEST,
-      payload: { avatar },
-    });
-  },
-  avatarChanged: (result) => dispatch(avatarChanged(result)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

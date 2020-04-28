@@ -10,7 +10,7 @@ class ProfileScreen extends React.Component {
   // unsubscribe = null;
   componentDidMount() {
     // const user = firebase.auth().currentUser.uid;
-    // this.dispatchFetchUser();
+    this.props.dispatchFetchUser();
     // this.unsubscribe = firebase
     //   .firestore()
     //   .collection('users')
@@ -60,8 +60,8 @@ class ProfileScreen extends React.Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { avatar, uid, firstName, lastName, user } = auth;
-  return { avatar, uid, firstName, lastName, user };
+  const { avatar, uid, firstName, lastName } = auth;
+  return { avatar, uid, firstName, lastName };
 };
 
 const mapDispatchToProps = (dispatch) => ({

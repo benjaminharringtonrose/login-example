@@ -120,14 +120,7 @@ addAvatar = async ({ data }) => {
 
 export function* registerUserSaga(action) {
   try {
-    const {
-      email,
-      password,
-      firstName,
-      lastName,
-      avatar,
-      user,
-    } = action.payload;
+    const { email, password, firstName, lastName, avatar } = action.payload;
     const auth = firebase.auth();
     const data = yield call(
       [auth, auth.createUserWithEmailAndPassword],
@@ -143,7 +136,6 @@ export function* registerUserSaga(action) {
       lastName: lastName,
       email: email,
       avatar: avatar,
-      user: user,
     });
     addAvatar(avatar);
     yield put(registerUserSuccess(data));
@@ -171,14 +163,10 @@ export function* fetchUserSaga() {
   try {
     const user = firebase.auth().currentUser.uid;
     const db = yield call(() =>
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(user)
-        .onSnapshot((doc) => {
-          put(fetchUserSuccess(doc.get.user));
-        })
+      firebase.firestore().collection('users').doc(user)
     );
+    yield put(fetchUserSuccess(db));
+
     // yield put(fetchUserSuccess(currentUser));
   } catch (error) {
     yield put(fetchUserFail(error));

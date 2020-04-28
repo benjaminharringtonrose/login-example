@@ -16,7 +16,6 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  user: {},
   firstName: '',
   lastName: '',
   avatar: undefined,
@@ -100,7 +99,7 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
     case REGISTER_USER_SUCCESS:
       return {
         ...state,
-        ...INITIAL_STATE,
+        // ...INITIAL_STATE,
         user: action.payload,
         loading: false,
       };
@@ -113,7 +112,7 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
       };
     case AVATAR_CHANGED:
       return {
-        ...state.user,
+        ...state,
         avatar: action.payload,
       };
     default:

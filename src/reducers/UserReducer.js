@@ -1,11 +1,36 @@
-import { USER_FETCH_SUCCESS } from '../actions/types';
+import {
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
+} from '../actions/types';
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  user: {},
+};
 
 const UserReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case USER_FETCH_SUCCESS:
-      return action.payload;
+    case FETCH_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        user: action.payload,
+        loading: false,
+        error: '',
+      };
+    case FETCH_USER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        password: '',
+        loading: false,
+      };
     default:
       return state;
   }
