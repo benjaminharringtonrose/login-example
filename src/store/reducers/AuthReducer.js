@@ -12,24 +12,28 @@ import {
   LOGOUT_USER_REQUEST,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
+  AVATAR_CHANGED,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  user: null,
   firstName: '',
   lastName: '',
+  avatar: undefined,
   email: '',
   password: '',
+  uid: '',
   error: '',
   loading: false,
 };
-/*
 
-*/
-export default (state = INITIAL_STATE, action) => {
-  console.log(action);
+// AUTH REDUCER
+
+const AuthReducer = (state = INITIAL_STATE, action) => {
+  console.log('ACTION', action);
   switch (action.type) {
-    // LOGIN FORM CASES
     case EMAIL_CHANGED:
       return {
         ...state,
@@ -62,11 +66,12 @@ export default (state = INITIAL_STATE, action) => {
       };
     case LOGOUT_USER_REQUEST:
       return {
-        ...INITIAL_STATE,
+        ...state,
         loading: true,
       };
     case LOGOUT_USER_SUCCESS:
       return {
+        ...state,
         ...INITIAL_STATE,
         loading: false,
       };
@@ -97,7 +102,7 @@ export default (state = INITIAL_STATE, action) => {
     case REGISTER_USER_SUCCESS:
       return {
         ...state,
-        ...INITIAL_STATE,
+        // ...INITIAL_STATE,
         user: action.payload,
         loading: false,
       };
@@ -108,7 +113,35 @@ export default (state = INITIAL_STATE, action) => {
         password: '',
         loading: false,
       };
+    case AVATAR_CHANGED:
+      return {
+        ...state,
+        avatar: action.payload,
+      };
+    case FETCH_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        user: action.payload,
+        loading: false,
+        error: '',
+      };
+    case FETCH_USER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        password: '',
+        loading: false,
+      };
     default:
       return state;
   }
 };
+
+export default AuthReducer;
