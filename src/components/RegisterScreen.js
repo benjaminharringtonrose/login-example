@@ -15,16 +15,6 @@ import {
 } from '../store/actions';
 
 class RegisterScreen extends Component {
-  // state = {
-  //   user: {
-  //     name: '',
-  //     email: '',
-  //     password: '',
-  //     avatar: undefined,
-  //   },
-  //   errorMessage: null,
-  // };
-
   onEmailChange(text) {
     this.props.emailChanged(text);
   }

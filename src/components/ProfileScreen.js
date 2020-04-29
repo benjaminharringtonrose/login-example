@@ -10,25 +10,24 @@ import firebase from 'firebase';
 require('firebase/firestore');
 
 class ProfileScreen extends React.Component {
-  // unsubscribe = null;
+  unsubscribe = null;
   componentDidMount() {
-    const user = firebase.auth().currentUser.uid;
-    // this.props.dispatchFetchUser(user);
-
-    // this.unsubscribe = firebase
-    //   .firestore()
-    //   .collection('users')
-    //   .doc(user)
-    //   .get()
-    //   .then((doc) => {
-    //     // this.props.dispatchFetchUser();
-    //     // this.setState({ user: doc.data() });
-    //   });
+    let user = firebase.auth().updateCurrentUser;
+    user = firebase.auth().currentUser.uid;
+    this.unsubscribe = firebase
+      .firestore()
+      .collection('users')
+      .doc(user)
+      .get()
+      .then((doc) => {
+        this.props.dispatchFetchUser(doc.data());
+      });
+    console.log('PROPS!!', this.props);
   }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   onLogoutPress() {
     this.props.dispatchLogoutRequest();
@@ -47,9 +46,7 @@ class ProfileScreen extends React.Component {
             style={styles.avatar}
           />
         </View>
-        <Text
-          style={styles.name}
-        >{`${this.props.firstName} ${this.props.lastName}`}</Text>
+        <Text style={styles.name}>{this.props.firstName}</Text>
         <Card>
           <CardSection>
             <Text>Profile Screen</Text>
@@ -63,9 +60,9 @@ class ProfileScreen extends React.Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => {
-  const { avatar, uid, firstName, lastName } = auth;
-  return { avatar, uid, firstName, lastName };
+const mapStateToProps = ({ users }) => {
+  const { avatar, firstName, lastName } = users;
+  return { avatar, firstName, lastName };
 };
 
 const mapDispatchToProps = (dispatch) => ({

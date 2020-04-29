@@ -35,15 +35,12 @@ export function* fetchUserSaga(action) {
     const doc = yield getDocById('users', uid);
     const user = {
       ...doc.data(),
-      id: doc.uid,
+      uid: doc.id,
     };
     yield put(fetchUserSuccess(user));
   } catch (error) {
     yield put(fetchUserFail({ error }));
   }
-  // finally {
-  //   yield put(manageLoading.fulfill());
-  // }
 }
 
 // LOGIN SAGA
@@ -57,7 +54,6 @@ export function* loginUserSaga(action) {
       email,
       password
     );
-
     yield put(loginUserSuccess(data));
     Actions.main();
   } catch (error) {

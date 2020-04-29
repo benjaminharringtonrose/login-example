@@ -5,7 +5,11 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  user: {},
+  user: {
+    firstName: '',
+    lastName: '',
+    avatar: undefined,
+  },
 };
 
 const UserReducer = (state = INITIAL_STATE, action) => {
